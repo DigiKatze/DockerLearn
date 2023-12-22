@@ -42,6 +42,10 @@ COPY ./tests /var/www/html/tests
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 COPY --from=dev-deps app/vendor/ /var/www/html/vendor
 
+FROM development as test
+WORKDIR /var/www/html
+RUN ./vendor/bin/phpunit tests/HelloWorldTest.php
+
 # Use the default production configuration for PHP runtime arguments, see
 # https://github.com/docker-library/docs/tree/master/php#configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
